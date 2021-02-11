@@ -1,9 +1,13 @@
 #include "ATM.h"
 
+#include <vector>
+
 int main()
 {
-	const AccountOwner objects[10];
-	
+
+
+
+
 
 	return 0;
 }

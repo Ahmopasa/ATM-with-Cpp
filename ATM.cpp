@@ -2,14 +2,74 @@
 
 int AccountOwner::AccountTransactionCounter{0};
 
+const std::string& AccountOwner::getName() const
+{
+	return Name;
+}
+
+void AccountOwner::setName(const std::string& tempName)
+{
+	Name = tempName;
+}
+
+const std::string& AccountOwner::getSurname() const
+{
+	return Surname;
+}
+
+void AccountOwner::setSurname(const std::string& tempSurname)
+{
+	Surname = tempSurname;
+}
+
+const std::string& AccountOwner::getAddress() const
+{
+	return Address;
+}
+
+void AccountOwner::setAddress(const std::string& tempAddress)
+{
+	Address = tempAddress;
+}
+
+const int& AccountOwner::getBalance() const
+{
+	return AccountBalance;
+}
+
+void AccountOwner::setBalance(const int& tempBalance)
+{
+	AccountBalance = tempBalance;
+}
+
+const int& AccountOwner::getAccountPINCode() const
+{
+	return AccountPINCode;
+}
+
+void AccountOwner::setAccountPINCode(const int& tempPINCode)
+{
+	AccountPINCode = tempPINCode;
+}
+
+const bool& AccountOwner::getAccountVipStatus() const
+{
+	return AccountVipStatus;
+}
+
+void AccountOwner::setAccountVipStatus(const bool& tempVipStatus)
+{
+	AccountVipStatus = tempVipStatus;
+}
+
 AccountOwner::AccountOwner(void)
 {
 	Name = "NoName";
 	Surname = "NoSurname";
 	Address = "NoAddress";
 
-	int AccountBalance = 0;
-	int AccountPINCode = 0;
+	AccountBalance = 0;
+	AccountPINCode = 0;
 
 	AccountVipStatus = false;
 
@@ -39,65 +99,17 @@ AccountOwner::AccountOwner(const AccountOwner& tempObj)
 
 AccountOwner::~AccountOwner()
 {
-	
+	std::cout << --AccountTransactionCounter << "th Deconstruction was called" << std::endl;
 }
 
-std::string& AccountOwner::getName()
+void CheckAccountInfo(const AccountOwner& tempObjective)
 {
-	return Name;
+	std::cout << "Name: " << tempObjective.getName() << std::endl;
+	std::cout << "Surname: " << tempObjective.getSurname() << std::endl;
+	std::cout << "Address: " << tempObjective.getAddress() << std::endl;
+	std::cout << "AccountBalance: " << tempObjective.getBalance() << std::endl;
+	std::cout << "AccountPINCode: " << tempObjective.getAccountPINCode() << std::endl;
+	std::cout << "AccountVipStatus: " << std::boolalpha << tempObjective.getAccountVipStatus() << std::endl;
+
 }
 
-std::string& AccountOwner::getSurname()
-{
-	return Surname;
-}
-
-std::string& AccountOwner::getAddress()
-{
-	return Address;
-}
-
-void AccountOwner::setName(const std::string& tempName)
-{
-	Name = tempName;
-}
-
-void AccountOwner::setSurname(const std::string& tempSurname)
-{
-	Surname = tempSurname;
-}
-
-void AccountOwner::setAddress(const std::string& tempAddress)
-{
-	Address = tempAddress;
-}
-
-int& AccountOwner::getBalance()
-{
-	return AccountBalance;
-}
-
-void AccountOwner::setBalance(const int& tempBalance)
-{
-	AccountBalance = tempBalance;
-}
-
-int& AccountOwner::getAccountPINCode()
-{
-	return AccountPINCode;
-}
-
-void AccountOwner::setAccountPINCode(const int& tempPINCode)
-{
-	AccountPINCode = tempPINCode;
-}
-
-bool& AccountOwner::getAccountVipStatus()
-{
-	return AccountVipStatus;
-}
-
-void AccountOwner::setAccountVipStatus(const bool& tempVipStatus)
-{
-	AccountVipStatus = tempVipStatus;
-}

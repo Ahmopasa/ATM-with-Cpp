@@ -1,58 +1,57 @@
 #ifndef ATM_H_
 #define ATM_H_
 
-#include <string> 
 #include <iostream>
+#include <string>
+
 
 class AccountOwner
 {
 private:
-    std::string Name;
-    std::string Surname;
-    std::string Address;
+	std::string Name;
+	std::string Surname;
+	std::string Address;
 
-    int AccountBalance;
-    int AccountPINCode;
+	int AccountBalance;
+	int AccountPINCode;
 
-    bool AccountVipStatus;
+	bool AccountVipStatus;
 
-    static int AccountTransactionCounter;
+	static int AccountTransactionCounter;
 
-private:
-    std::string& getName();
-    void setName(const std::string&);
+public:
 
-    std::string& getSurname();
-    void setSurname(const std::string&);
+	const std::string& getName(void) const;
+	void setName(const std::string&);
 
-    std::string& getAddress();
-    void setAddress(const std::string&);
+	const std::string& getSurname(void) const;
+	void setSurname(const std::string&);
 
-    int& getBalance();
-    void setBalance(const int&);
+	const std::string& getAddress(void) const;
+	void setAddress(const std::string&);
 
-    int& getAccountPINCode();
-    void setAccountPINCode(const int&);
+	const int& getBalance(void) const;
+	void setBalance(const int&);
 
-    bool& getAccountVipStatus();
-    void setAccountVipStatus(const bool&);
+	const int& getAccountPINCode(void) const; 
+	void setAccountPINCode(const int&);
 
+	const bool& getAccountVipStatus(void) const;
+	void setAccountVipStatus(const bool&);
 
 
 public:
-    AccountOwner();
-    AccountOwner(std::string& tempName, std::string& tempSurname, std::string& tempAddress, int& tempBalance, int& tempPINCode, bool tempVipStatus = false);
-    AccountOwner(const AccountOwner&);
-    ~AccountOwner();
-
-    void DepositCurrency(AccountOwner&);
-    void WithdrawCurrency(AccountOwner&);
-    void CheckAccountInfo(const AccountOwner&);
-    void ChangeAccountInfo();
-
+	AccountOwner(void);
+	AccountOwner(std::string& tempName, std::string& tempSurname, std::string& tempAddress, int& tempBalance, int& tempPINCode, bool tempVipStatus = false);
+	AccountOwner(const AccountOwner&);
+	~AccountOwner();
 };
 
+void CheckAccountInfo(const AccountOwner& tempObjective);
+void DepositCurrency(); //TODO #1
+void WithdrawCurrency(); //TODO #2
+//void CreateAccount(); //TODO #3
 
-
+//void ChangeAccountInfo(); //TODO #4
 
 #endif
