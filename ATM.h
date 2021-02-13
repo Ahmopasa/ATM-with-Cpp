@@ -48,8 +48,8 @@ public:
 };
 
 void CheckAccountInfo(const AccountOwner& tempObjective);
-void DepositCurrency(); //TODO #1
-void WithdrawCurrency(); //TODO #2
+void DepositCurrency(AccountOwner&); //TODO #1
+void WithdrawCurrency(AccountOwner&); //TODO #2
 //void CreateAccount(); //TODO #3
 
 //void ChangeAccountInfo(); //TODO #4

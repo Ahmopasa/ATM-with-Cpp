@@ -99,7 +99,7 @@ AccountOwner::AccountOwner(const AccountOwner& tempObj)
 
 AccountOwner::~AccountOwner()
 {
-	std::cout << --AccountTransactionCounter << "th Deconstruction was called" << std::endl;
+	std::cout << AccountTransactionCounter-- << "th Deconstruction was called" << std::endl;
 }
 
 void CheckAccountInfo(const AccountOwner& tempObjective)
@@ -111,5 +111,28 @@ void CheckAccountInfo(const AccountOwner& tempObjective)
 	std::cout << "AccountPINCode: " << tempObjective.getAccountPINCode() << std::endl;
 	std::cout << "AccountVipStatus: " << std::boolalpha << tempObjective.getAccountVipStatus() << std::endl;
 
+}
+
+void DepositCurrency(AccountOwner& tempObjective)
+{
+	std::cout << "How much TL will you deposit to your current account?: " << std::flush;
+	int depositAmount {};
+	std::cin >> depositAmount;
+
+	tempObjective.setBalance(tempObjective.getBalance() + depositAmount);
+
+	std::cout << "Currently, you have " << tempObjective.getBalance() << "TL in your bank account.\n";
+
+}
+
+void WithdrawCurrency(AccountOwner& tempObjective)
+{
+	std::cout << "How much TL will you withdraw to your current account?: " << std::flush;
+	int withdrawAccount{};
+	std::cin >> withdrawAccount;
+	
+	tempObjective.setBalance(tempObjective.getBalance() - withdrawAccount);
+
+	std::cout << "Currently, you have " << tempObjective.getBalance() << "TL in your bank account.\n";
 }
 
