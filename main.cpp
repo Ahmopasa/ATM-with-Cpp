@@ -1,20 +1,12 @@
 #include "ATM.h"
 
-
-#include <vector>
-
-
-
 int main()
 {
 
-	AccountOwner customer_1;
 
-	CheckAccountInfo(customer_1);
+	std::vector<AccountOwner> customerList;
 
-	DepositCurrency(customer_1);
-
-	WithdrawCurrency(customer_1);
+	CreateAccount(1, customerList);
 
 
 	return 0;

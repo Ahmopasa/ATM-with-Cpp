@@ -136,3 +136,66 @@ void WithdrawCurrency(AccountOwner& tempObjective)
 	std::cout << "Currently, you have " << tempObjective.getBalance() << "TL in your bank account.\n";
 }
 
+std::vector<AccountOwner>& CreateAccount(unsigned int amount, std::vector<AccountOwner>& customerList)
+{
+	std::cout << "How would you like to create an account?\n";
+	std::cout << "1. With predefined values.\n";
+	std::cout << "2. With specific values.\n";
+	std::cout << "0. To Exit.\n";
+
+	unsigned int choice{};
+	std::cin >> choice;
+
+	switch (choice)
+	{
+	case 1: 
+	{
+		std::cout << "An account with predefined values has been created.\n";
+		for (size_t i = 0; i < amount; i++)
+		{
+			AccountOwner customer;
+			customerList.push_back(customer);
+		}
+		return customerList;
+	}
+	case 2:
+	{
+		std::cout << "An account with specific values will be created. Please, specify these values;\n";
+		std::string customerName;
+		std::string customerSurame;
+		std::string customerAddress;
+		int customerAccountBalance;
+		int customerAccountPINCode;
+		bool customerAccountVipStatus;
+
+		for (size_t i = 0; i < amount; i++)
+		{
+			std::cout << "Please, Enter " << i << "th Customer's Information:\n";
+			std::cout << "Name:       "; std::cin >> customerName;
+			std::cout << "Surname:    "; std::cin >> customerSurame;
+			std::cout << "Address:    "; std::cin >> customerAddress;
+			std::cout << "Balance:    "; std::cin >> customerAccountBalance;
+			std::cout << "PIN Code:   "; std::cin >> customerAccountPINCode;
+			std::cout << "VIP Status: "; std::cin >> customerAccountVipStatus;
+
+			AccountOwner customer{ customerName , customerSurame , customerAddress , customerAccountBalance , customerAccountPINCode , customerAccountVipStatus };
+
+			customerList.push_back(customer);
+		}
+		return customerList;
+	}
+	case 0:
+	{
+		std::cout << "No account were created.\n"; 
+		return customerList;
+	}
+	default:
+	{
+		std::cout << "Please, enter a number mentioned above.\nProgram is exiting.";
+		break;
+	}
+	}
+
+	return customerList;
+}
+

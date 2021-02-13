@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 
 class AccountOwner
@@ -48,9 +49,9 @@ public:
 };
 
 void CheckAccountInfo(const AccountOwner& tempObjective);
-void DepositCurrency(AccountOwner&); //TODO #1
-void WithdrawCurrency(AccountOwner&); //TODO #2
-//void CreateAccount(); //TODO #3
+void DepositCurrency(AccountOwner& tempObjective);
+void WithdrawCurrency(AccountOwner& tempObjective);
+std::vector<AccountOwner>& CreateAccount(unsigned int amount, std::vector<AccountOwner>& customerList); //To create a single account.
 
 //void ChangeAccountInfo(); //TODO #4
 
