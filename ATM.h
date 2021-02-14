@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 
 class AccountOwner
 {
@@ -51,7 +52,7 @@ void CheckAccountInfo(const std::vector<AccountOwner>&);
 void DepositCurrency(std::vector<AccountOwner>&);
 void WithdrawCurrency(std::vector<AccountOwner>&);
 std::vector<AccountOwner>& CreateAccount(const unsigned int, std::vector<AccountOwner>&);
-void ChangeAccountInfo(std::vector<AccountOwner>&); //TODO #4
-//void SaveAccountInfo(const std::vector<AccountOwner>&); //TODO #5
+void ChangeAccountInfo(std::vector<AccountOwner>&); 
+void SaveAccountInfo(const std::vector<AccountOwner>&); //TODO #5
 
 #endif

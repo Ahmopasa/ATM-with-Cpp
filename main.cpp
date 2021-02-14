@@ -6,7 +6,7 @@ int main()
 
 	std::vector<AccountOwner> customerList;
 
-	CreateAccount(2, customerList);
+	CreateAccount(1, customerList);
 
 	//CheckAccountInfo(customerList);
 
@@ -14,10 +14,11 @@ int main()
 
 	//WithdrawCurrency(customerList);
 
-	ChangeAccountInfo(customerList);
+	//ChangeAccountInfo(customerList);
 
-	CheckAccountInfo(customerList);
+	//CheckAccountInfo(customerList);
 
+	SaveAccountInfo(customerList);
 
 	return 0;
 }
