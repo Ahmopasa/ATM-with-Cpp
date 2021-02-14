@@ -289,22 +289,23 @@ void ChangeAccountInfo(std::vector<AccountOwner>& customerList)
 void SaveAccountInfo(const std::vector<AccountOwner>& customerList)
 {
 	unsigned int customerAmount = customerList.size();
-	std::ofstream* fileHandler = new std::ofstream[customerAmount];
 
 		for (size_t i = 0; i < customerAmount; i++)
 		{
+			std::ofstream fileHandler;
+			fileHandler.open(std::to_string(customerList[i].getAccountPINCode()));
+
 			if (!fileHandler)
 			{
 				std::cout << "Failed to open _" << std::to_string(customerList[i].getAccountPINCode()) << "_. Exiting from the program.\n"; 
 				exit(EXIT_FAILURE);
 			}
+			else
+			{
+				fileHandler << "Information Of Customer -" << i + 1 << "-\n" << customerList[i].getName() << "\n" << customerList[i].getSurname() << "\n" << customerList[i].getAddress() << "\n" << customerList[i].getBalance() << "\n" << customerList[i].getAccountVipStatus() << "\n";
 
-			fileHandler[i].open(std::to_string(customerList[i].getAccountPINCode()));
-			fileHandler[i] << "Information Of Customer -" << i + 1 << "-\n" << customerList[i].getName() << "\n" << customerList[i].getSurname() << "\n" << customerList[i].getAddress() << "\n" << customerList[i].getBalance() << "\n" << customerList[i].getAccountVipStatus() << "\n";
-			
-			fileHandler[i].close();
+				fileHandler.close();
+			}
 		}
-
-	delete[] fileHandler;
 }
 
