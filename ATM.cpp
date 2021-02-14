@@ -71,7 +71,7 @@ AccountOwner::AccountOwner(void)
 	AccountBalance = 0;
 	AccountPINCode = 0;
 
-	AccountVipStatus = false;
+	AccountVipStatus = AccountBalance > 1'000'000 ? true : false;
 
 	std::cout << ++AccountTransactionCounter << " - " << "Constructor for AccountOwner, with predetermined values, was called." << std::endl;
 
@@ -94,7 +94,7 @@ AccountOwner::AccountOwner(const AccountOwner& tempObj)
 
 	AccountVipStatus = tempObj.AccountVipStatus;
 
-	std::cout << ++AccountTransactionCounter << " - " << "Copy Constructor for AccountOwner was called." << std::endl;
+	std::cout << ++AccountTransactionCounter << " - " << " Copy Constructor for AccountOwner was called." << std::endl;
 }
 
 AccountOwner::~AccountOwner()
@@ -102,46 +102,56 @@ AccountOwner::~AccountOwner()
 	std::cout << AccountTransactionCounter-- << "th Deconstruction was called" << std::endl;
 }
 
-void CheckAccountInfo(const AccountOwner& tempObjective)
+void CheckAccountInfo(const std::vector<AccountOwner>& customerList)
 {
-	std::cout << "Name: " << tempObjective.getName() << std::endl;
-	std::cout << "Surname: " << tempObjective.getSurname() << std::endl;
-	std::cout << "Address: " << tempObjective.getAddress() << std::endl;
-	std::cout << "AccountBalance: " << tempObjective.getBalance() << std::endl;
-	std::cout << "AccountPINCode: " << tempObjective.getAccountPINCode() << std::endl;
-	std::cout << "AccountVipStatus: " << std::boolalpha << tempObjective.getAccountVipStatus() << std::endl;
+	for (size_t i = 0; i < customerList.size(); i++)
+	{
+		std::cout << "Information of customer - " << (i + 1) << " :\n";
+		std::cout << "Name: " << customerList[i].getName() << std::endl;
+		std::cout << "Surname: " << customerList[i].getSurname() << std::endl;
+		std::cout << "Address: " << customerList[i].getAddress() << std::endl;
+		std::cout << "AccountBalance: " << customerList[i].getBalance() << std::endl;
+		std::cout << "AccountPINCode: " << customerList[i].getAccountPINCode() << std::endl;
+		std::cout << "AccountVipStatus: " << std::boolalpha << customerList[i].getAccountVipStatus() << std::endl;
 
+	}
 }
 
-void DepositCurrency(AccountOwner& tempObjective)
+void DepositCurrency(std::vector<AccountOwner>& customerList)
 {
-	std::cout << "How much TL will you deposit to your current account?: " << std::flush;
-	int depositAmount {};
-	std::cin >> depositAmount;
+	for (size_t i = 0; i < customerList.size(); i++)
+	{
+		std::cout << "How much TL will you deposit to customer " << i + 1 << ": "<< std::flush;
+		int depositAmount{};
+		std::cin >> depositAmount;
 
-	tempObjective.setBalance(tempObjective.getBalance() + depositAmount);
+		customerList[i].setBalance(customerList[i].getBalance() + depositAmount);
 
-	std::cout << "Currently, you have " << tempObjective.getBalance() << "TL in your bank account.\n";
-
+		std::cout << "Currently, customer- " << i << "have " << customerList[i].getBalance() << "TL in his/her bank account.\n";
+	}
 }
 
-void WithdrawCurrency(AccountOwner& tempObjective)
+void WithdrawCurrency(std::vector<AccountOwner>& customerList)
 {
-	std::cout << "How much TL will you withdraw to your current account?: " << std::flush;
-	int withdrawAccount{};
-	std::cin >> withdrawAccount;
-	
-	tempObjective.setBalance(tempObjective.getBalance() - withdrawAccount);
+	for (size_t i = 0; i < customerList.size(); i++)
+	{
+		std::cout << "How much TL will you withdraw from customer " << i + 1 << ": " << std::flush;
+		int withdrawAccount{};
+		std::cin >> withdrawAccount;
 
-	std::cout << "Currently, you have " << tempObjective.getBalance() << "TL in your bank account.\n";
+		customerList[i].setBalance(customerList[i].getBalance() - withdrawAccount);
+
+		std::cout << "Currently, customer- " << i << "have " << customerList[i].getBalance() << "TL in his/her bank account.\n";
+	}
 }
 
-std::vector<AccountOwner>& CreateAccount(unsigned int amount, std::vector<AccountOwner>& customerList)
+std::vector<AccountOwner>& CreateAccount(const unsigned int amount, std::vector<AccountOwner>& customerList)
 {
 	std::cout << "How would you like to create an account?\n";
 	std::cout << "1. With predefined values.\n";
 	std::cout << "2. With specific values.\n";
 	std::cout << "0. To Exit.\n";
+	std::cout << "Choice: ";
 
 	unsigned int choice{};
 	std::cin >> choice;
@@ -195,7 +205,84 @@ std::vector<AccountOwner>& CreateAccount(unsigned int amount, std::vector<Accoun
 		break;
 	}
 	}
-
 	return customerList;
+}
+
+void ChangeAccountInfo(std::vector<AccountOwner>& customerList)
+{
+	std::cout << "Which piece of information would you like to change?\n";
+	std::cout << "To Exit:            0\n";
+	std::cout << "To Change Name:     1\n";
+	std::cout << "To Change Surname:  2\n";
+	std::cout << "To Change Address:  3\n";
+	std::cout << "To Change PIN Code: 4\n";
+	std::cout << "Choice: ";
+
+	unsigned int choice{};
+	std::cin >> choice;
+
+	for (size_t i = 0; i < customerList.size(); i++)
+	{
+		switch (choice)
+		{
+			case 0:
+			{
+				std::cout << "Exiting from the program.\n"; break;
+			}
+			case 1:
+			{
+				for (size_t i = 0; i < customerList.size(); i++)
+				{
+					std::string Name;
+					std::cout << "Enter the new name for customer -" << i +1 << ": ";
+					std::cin >> Name;
+
+					customerList[i].setName(Name);
+				}
+
+				break;
+			}
+			case 2:
+			{
+				for (size_t i = 0; i < customerList.size(); i++)
+				{
+					std::string Surname;
+					std::cout << "Enter the new surname for customer -" << i + 1 << ": ";
+					std::cin >> Surname;
+
+					customerList[i].setSurname(Surname);
+				}
+
+				break;
+			}
+			case 3:
+			{
+				for (size_t i = 0; i < customerList.size(); i++)
+				{
+					std::string Address;
+					std::cout << "Enter the new address for customer -" << i + 1 << ": ";
+					std::cin >> Address;
+
+					customerList[i].setAddress(Address);
+				}
+
+				break;
+			}
+			case 4:
+			{
+				for (size_t i = 0; i < customerList.size(); i++)
+				{
+					int PinCode;
+					std::cout << "Enter the new PIN Code for customer -" << i + 1 << ": ";
+					std::cin >> PinCode;
+
+					customerList[i].setAccountPINCode(PinCode);
+				}
+
+				break;
+			}
+		}
+	}
+
 }
 

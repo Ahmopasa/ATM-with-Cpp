@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 
-
 class AccountOwner
 {
 private:
@@ -48,11 +47,11 @@ public:
 	~AccountOwner();
 };
 
-void CheckAccountInfo(const AccountOwner& tempObjective);
-void DepositCurrency(AccountOwner& tempObjective);
-void WithdrawCurrency(AccountOwner& tempObjective);
-std::vector<AccountOwner>& CreateAccount(unsigned int amount, std::vector<AccountOwner>& customerList); //To create a single account.
-
-//void ChangeAccountInfo(); //TODO #4
+void CheckAccountInfo(const std::vector<AccountOwner>&);
+void DepositCurrency(std::vector<AccountOwner>&);
+void WithdrawCurrency(std::vector<AccountOwner>&);
+std::vector<AccountOwner>& CreateAccount(const unsigned int, std::vector<AccountOwner>&);
+void ChangeAccountInfo(std::vector<AccountOwner>&); //TODO #4
+//void SaveAccountInfo(const std::vector<AccountOwner>&); //TODO #5
 
 #endif
