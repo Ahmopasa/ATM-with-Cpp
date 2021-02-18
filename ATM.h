@@ -51,8 +51,10 @@ public:
 void CheckAccountInfo(const std::vector<AccountOwner>&);
 void DepositCurrency(std::vector<AccountOwner>&);
 void WithdrawCurrency(std::vector<AccountOwner>&);
-std::vector<AccountOwner>& CreateAccount(const unsigned int, std::vector<AccountOwner>&);
+std::vector<AccountOwner>& CreateAccount(std::vector<AccountOwner>&);
 void ChangeAccountInfo(std::vector<AccountOwner>&); 
-void SaveAccountInfo(const std::vector<AccountOwner>&); //TODO #5
+void SaveAccountInfo(const std::vector<AccountOwner>&);
+void UserScreen(void);
+std::vector<AccountOwner>& ReadAccountInfo(const int PinCode, std::vector<AccountOwner>& customerList);
 
 #endif
