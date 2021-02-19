@@ -1,4 +1,5 @@
 #include "ATM.h"
+#include <limits>
 
 int AccountOwner::AccountTransactionCounter{0};
 
@@ -314,35 +315,86 @@ void SaveAccountInfo(const std::vector<AccountOwner>& customerList)
 	delete[] fileHandler;
 }
 
+void static IgnoreBuffer(void)
+{
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
 void UserScreen()
 {
 	std::vector<AccountOwner> customerList;
 
 	std::cout << "Welcome to the ATM Machine. Please, enter your name and PIN code to proceed.\n";
-	std::cout << "If you do not have any PIN code, or it is not reachable, please press 999.\n";
-	std::cout << "PinCode : ";
-	short PinCode{};
-	std::cin >> PinCode;
-
+	std::cout << "< If you do not have any PIN code, or it is not reachable, please press 9999. >\n";
+	
 	while (true)
 	{
+		std::cout << "PinCode : ";
+		short PinCode{};
+		std::cin >> PinCode;
+
 		if (std::cin.fail())
 		{
-			std::cout << "Please enter a numeric value.\n"; break;
-		}
-		else if (PinCode == 999)
-		{
-			std::cout << "What is your name, surname and address?\n"; break;
+			std::cout << "You have entered an invalid input. Please, make sure that you have entered a numeric value.\n";
+			std::cin.clear();
+			IgnoreBuffer();
 		}
 		else if (PinCode < 0)
 		{
-			std::cout << "You entered below zero. Enter Again: "; std::cin >> PinCode;
+			std::cout << "You have entered a valid input, but it was below zero. Please, make sure that you have entered a positive numeric value.\n";
+			IgnoreBuffer();
 		}
 		else
 		{
+			std::cout << "Flushing the output stream!...\n" << std::flush; std::system("CLS");
 			ReadAccountInfo(PinCode, customerList);
-			CheckAccountInfo(customerList);
-			break;
+			std::cout << "Welcome => " << customerList[0].getName() << "!\n";
+			std::cout << "What would you like to do?\n";
+			std::cout << "1- See Account Information.\n";
+			std::cout << "2- Deposit Cash.\n";
+			std::cout << "3- Withdraw Cash.\n";
+			std::cout << "0- Exit.\n";
+
+			while (true)
+			{
+				std::cout << "Choice: ";
+				short customerChoice{};
+				std::cin >> customerChoice;
+
+				if (std::cin.fail())
+				{
+					std::cout << "You have entered an invalid input. Please, make sure that you have entered a numeric value between 0-3.\n";
+					std::cin.clear();
+					IgnoreBuffer();
+				}
+				else if (customerChoice < 0)
+				{
+					std::cout << "You have entered a valid input, but it was below zero. Please, make sure that you have entered a numeric value between 0-3.\n";
+					IgnoreBuffer();
+				}
+				else
+				{
+					switch (customerChoice)
+					{
+						case 1:
+						{
+							CheckAccountInfo(customerList); break;
+						}
+						case 2:
+						{
+							DepositCurrency(customerList); break;
+						}
+						case 3:
+						{
+							WithdrawCurrency(customerList); break;
+						}
+						default:
+						{
+							std::cout << "Something is crashed. Exiting from the program.\n"; exit(EXIT_FAILURE);
+						}
+					}
+				}
+			}
 		}
 	}
 }
