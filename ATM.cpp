@@ -1,7 +1,31 @@
 #include "ATM.h"
 #include <limits>
 
+ATM::ATM()
+{
+	ATMBalanceAmount = 1'000'000;
+}
+
+ATM::~ATM()
+{
+}
+
+const unsigned int& ATM::getATMBalanceAmount(void) const
+{
+	return ATMBalanceAmount;
+}
+
+void ATM::setATMBalanceAmount(const unsigned int& tempBalance)
+{
+	ATMBalanceAmount = tempBalance;
+}
+
 int AccountOwner::AccountTransactionCounter{0};
+
+void static IgnoreBuffer(void)
+{
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
 
 const std::string& AccountOwner::getName() const
 {
@@ -33,22 +57,22 @@ void AccountOwner::setAddress(const std::string& tempAddress)
 	Address = tempAddress;
 }
 
-const int& AccountOwner::getBalance() const
+const unsigned int& AccountOwner::getBalance() const
 {
 	return AccountBalance;
 }
 
-void AccountOwner::setBalance(const int& tempBalance)
+void AccountOwner::setBalance(const unsigned int& tempBalance)
 {
 	AccountBalance = tempBalance;
 }
 
-const int& AccountOwner::getAccountPINCode() const
+const unsigned int& AccountOwner::getAccountPINCode() const
 {
 	return AccountPINCode;
 }
 
-void AccountOwner::setAccountPINCode(const int& tempPINCode)
+void AccountOwner::setAccountPINCode(const unsigned int& tempPINCode)
 {
 	AccountPINCode = tempPINCode;
 }
@@ -78,7 +102,7 @@ AccountOwner::AccountOwner(void)
 
 }
 
-AccountOwner::AccountOwner(std::string& tempName, std::string& tempSurname, std::string& tempAddress, int& tempBalance, int& tempPINCode, bool tempVipStatus) : Name{ tempName }, Surname{ tempSurname }, Address{ tempAddress }, AccountBalance{ tempBalance }, AccountPINCode{ tempPINCode }, AccountVipStatus{ tempVipStatus }
+AccountOwner::AccountOwner(std::string& tempName, std::string& tempSurname, std::string& tempAddress, unsigned int& tempBalance, unsigned int& tempPINCode, bool tempVipStatus) : Name{ tempName }, Surname{ tempSurname }, Address{ tempAddress }, AccountBalance{ tempBalance }, AccountPINCode{ tempPINCode }, AccountVipStatus{ tempVipStatus }
 {
 	//std::cout << ++AccountTransactionCounter << " - " << "Constructor for AccountOwner, with desired values, was called." << std::endl;
 }
@@ -114,7 +138,7 @@ void CheckAccountInfo(const std::vector<AccountOwner>& customerList)
 		std::cout << "AccountBalance: " << customerList[i].getBalance() << std::endl;
 		std::cout << "AccountPINCode: " << customerList[i].getAccountPINCode() << std::endl;
 		std::cout << "AccountVipStatus: " << std::boolalpha << customerList[i].getAccountVipStatus() << std::endl;
-
+		std::cout << "Total Amount of Transaction: " << customerList[i].AccountTransactionCounter << std::endl;
 	}
 }
 
@@ -123,13 +147,40 @@ void DepositCurrency(std::vector<AccountOwner>& customerList)
 	for (size_t i = 0; i < customerList.size(); i++)
 	{
 		std::cout << "How much TL will you deposit to customer " << i + 1 << ": "<< std::flush;
-		int depositAmount{};
-		std::cin >> depositAmount;
+		
 
-		customerList[i].setBalance(customerList[i].getBalance() + depositAmount);
+		while (true)
+		{
+			int depositAmount{};
+			std::cin >> depositAmount;
+			if (std::cin.fail())
+			{
+				std::cout << "You have entered an invalid cash amount. Please, make sure that you have entered a numeric value : ";
+				std::cin.clear();
+				IgnoreBuffer();
+			}
+			else if (depositAmount < 0)
+			{
+				std::cout << "You have entered a valid input, but it was below zero. Please, make sure that you have entered a positive cash value. Enter a new cash amount : ";
+				IgnoreBuffer();
+			}
+			else
+			{
+				customerList[i].setBalance(customerList[i].getBalance() + depositAmount); customerList[i].AccountTransactionCounter++;
+				customerList[i].setATMBalanceAmount(customerList[i].getATMBalanceAmount() + depositAmount); break;
+			}
+		}
 
 		std::cout << "Currently, customer- " << i << "have " << customerList[i].getBalance() << "TL in his/her bank account.\n";
+		
+
+		if (customerList[i].getBalance() > 1'000'000)
+		{
+			customerList[i].setAccountVipStatus(true);
+		}
 	}
+
+	SaveAccountInfo(customerList);
 }
 
 void WithdrawCurrency(std::vector<AccountOwner>& customerList)
@@ -137,13 +188,49 @@ void WithdrawCurrency(std::vector<AccountOwner>& customerList)
 	for (size_t i = 0; i < customerList.size(); i++)
 	{
 		std::cout << "How much TL will you withdraw from customer " << i + 1 << ": " << std::flush;
-		int withdrawAccount{};
-		std::cin >> withdrawAccount;
+		
+		while (true)
+		{
+			int withdrawAmount{};
+			std::cin >> withdrawAmount;
+			if (std::cin.fail())
+			{
+				std::cout << "You have entered an invalid cash amount. Please, make sure that you have entered a numeric value : ";
+				std::cin.clear();
+				IgnoreBuffer();
+			}
+			else if (withdrawAmount < 0)
+			{
+				std::cout << "You have entered a valid input, but it was below zero. Please, make sure that you have entered a positive cash value. Enter a new cash amount : ";
+				IgnoreBuffer();
+			}
+			else
+			{
+				if (customerList[i].getATMBalanceAmount() > static_cast<unsigned int>(withdrawAmount) && customerList[i].getBalance() >= static_cast<unsigned int>(withdrawAmount))
+				{
+					customerList[i].setBalance(customerList[i].getBalance() - withdrawAmount); customerList[i].AccountTransactionCounter++;
+					customerList[i].setATMBalanceAmount(customerList[i].getATMBalanceAmount() - withdrawAmount); break;
+				}
+				else
+				{
+					std::cout << "You do not have that much of cash money either in your account or in ATM.\n";
+					std::cout << "Cash in ATM               : " << customerList[i].getATMBalanceAmount() << "\n";
+					std::cout << "Cash in Your Account      : " << customerList[i].getBalance() << "\n";
+					std::cout << "Cash you wish to withdraw : " << withdrawAmount << "\n";
+					std::cout << "Enter Cash Amount Again   : ";
+				}
+			}
+		}
 
-		customerList[i].setBalance(customerList[i].getBalance() - withdrawAccount);
+		std::cout << "Currently, customer -" << i + 1 << "- have " << customerList[i].getBalance() << "TL in his/her bank account.\n";
 
-		std::cout << "Currently, customer- " << i << "have " << customerList[i].getBalance() << "TL in his/her bank account.\n";
+		if (customerList[i].getBalance() <= 1'000'000)
+		{
+			customerList[i].setAccountVipStatus(false);
+		}
 	}
+
+	SaveAccountInfo(customerList);
 }
 
 std::vector<AccountOwner>& CreateAccount(std::vector<AccountOwner>& customerList)
@@ -185,8 +272,8 @@ std::vector<AccountOwner>& CreateAccount(std::vector<AccountOwner>& customerList
 				std::string customerName;
 				std::string customerSurame;
 				std::string customerAddress;
-				int customerAccountBalance;
-				int customerAccountPINCode;
+				unsigned int customerAccountBalance;
+				unsigned int customerAccountPINCode;
 				bool customerAccountVipStatus;
 
 				std::cout << "Please, Enter " << counterList << "th Customer's Information:\n";
@@ -315,11 +402,6 @@ void SaveAccountInfo(const std::vector<AccountOwner>& customerList)
 	delete[] fileHandler;
 }
 
-void static IgnoreBuffer(void)
-{
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-}
-
 void UserScreen()
 {
 	std::vector<AccountOwner> customerList;
@@ -376,6 +458,10 @@ void UserScreen()
 				{
 					switch (customerChoice)
 					{
+						case 0: 
+						{
+							std::cout << "Exiting from the program by request.\n"; exit(EXIT_SUCCESS);
+						}
 						case 1:
 						{
 							CheckAccountInfo(customerList); break;

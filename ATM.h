@@ -6,22 +6,35 @@
 #include <vector>
 #include <fstream>
 
-class AccountOwner
+class ATM
+{
+private:
+	unsigned int ATMBalanceAmount;
+
+public:
+	ATM();
+	~ATM();
+
+	const unsigned int& getATMBalanceAmount(void) const;
+	void setATMBalanceAmount(const unsigned int&);
+};
+
+class AccountOwner : public ATM
 {
 private:
 	std::string Name;
 	std::string Surname;
 	std::string Address;
 
-	int AccountBalance;
-	int AccountPINCode;
+	unsigned int AccountBalance;
+	unsigned int AccountPINCode;
 
 	bool AccountVipStatus;
 
+public:
 	static int AccountTransactionCounter;
 
 public:
-
 	const std::string& getName(void) const;
 	void setName(const std::string&);
 
@@ -31,19 +44,17 @@ public:
 	const std::string& getAddress(void) const;
 	void setAddress(const std::string&);
 
-	const int& getBalance(void) const;
-	void setBalance(const int&);
+	const unsigned int& getBalance(void) const;
+	void setBalance(const unsigned int&);
 
-	const int& getAccountPINCode(void) const; 
-	void setAccountPINCode(const int&);
+	const unsigned int& getAccountPINCode(void) const; 
+	void setAccountPINCode(const unsigned int&);
 
 	const bool& getAccountVipStatus(void) const;
 	void setAccountVipStatus(const bool&);
 
-
-public:
 	AccountOwner(void);
-	AccountOwner(std::string& tempName, std::string& tempSurname, std::string& tempAddress, int& tempBalance, int& tempPINCode, bool tempVipStatus = false);
+	AccountOwner(std::string& tempName, std::string& tempSurname, std::string& tempAddress, unsigned int& tempBalance, unsigned int& tempPINCode, bool tempVipStatus = false);
 	AccountOwner(const AccountOwner&);
 	~AccountOwner();
 };
