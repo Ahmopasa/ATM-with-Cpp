@@ -99,7 +99,6 @@ AccountOwner::AccountOwner(void)
 	AccountVipStatus = AccountBalance > 1'000'000 ? true : false;
 
 	//std::cout << ++AccountTransactionCounter << " - " << "Constructor for AccountOwner, with predetermined values, was called." << std::endl;
-
 }
 
 AccountOwner::AccountOwner(std::string& tempName, std::string& tempSurname, std::string& tempAddress, unsigned int& tempBalance, unsigned int& tempPINCode, bool tempVipStatus) : Name{ tempName }, Surname{ tempSurname }, Address{ tempAddress }, AccountBalance{ tempBalance }, AccountPINCode{ tempPINCode }, AccountVipStatus{ tempVipStatus }
@@ -109,7 +108,6 @@ AccountOwner::AccountOwner(std::string& tempName, std::string& tempSurname, std:
 
 AccountOwner::AccountOwner(const AccountOwner& tempObj)
 {
-
 	Name = tempObj.Name;
 	Surname = tempObj.Surname;
 	Address = tempObj.Address;
@@ -148,7 +146,6 @@ void DepositCurrency(std::vector<AccountOwner>& customerList)
 	{
 		std::cout << "How much TL will you deposit to customer " << i + 1 << ": "<< std::flush;
 		
-
 		while (true)
 		{
 			int depositAmount{};
@@ -173,7 +170,6 @@ void DepositCurrency(std::vector<AccountOwner>& customerList)
 
 		std::cout << "Currently, customer- " << i << "have " << customerList[i].getBalance() << "TL in his/her bank account.\n";
 		
-
 		if (customerList[i].getBalance() > 1'000'000)
 		{
 			customerList[i].setAccountVipStatus(true);
@@ -426,39 +422,45 @@ void UserScreen()
 			std::cout << "You have entered a valid input, but it was below zero. Please, make sure that you have entered a positive numeric value.\n";
 			IgnoreBuffer();
 		}
+		else if (PinCode == 9999)
+		{
+			std::cout << "WIP" << std::endl;//TODO #1 : Ask for more information about the account. If still the account could not be found, then call the function to create a brand new account.
+		}
 		else
 		{
 			std::cout << "Flushing the output stream!...\n" << std::flush; std::system("CLS");
 			ReadAccountInfo(PinCode, customerList);
-			std::cout << "Welcome => " << customerList[0].getName() << "!\n";
-			std::cout << "What would you like to do?\n";
-			std::cout << "1- See Account Information.\n";
-			std::cout << "2- Deposit Cash.\n";
-			std::cout << "3- Withdraw Cash.\n";
-			std::cout << "0- Exit.\n";
-
-			while (true)
+			if (!customerList.empty())
 			{
-				std::cout << "Choice: ";
-				short customerChoice{};
-				std::cin >> customerChoice;
+				std::cout << "Welcome => " << customerList[0].getName() << "!\n";
+				std::cout << "What would you like to do?\n";
+				std::cout << "1- See Account Information.\n";
+				std::cout << "2- Deposit Cash.\n";
+				std::cout << "3- Withdraw Cash.\n";
+				std::cout << "0- Exit.\n";
 
-				if (std::cin.fail())
+				while (true)
 				{
-					std::cout << "You have entered an invalid input. Please, make sure that you have entered a numeric value between 0-3.\n";
-					std::cin.clear();
-					IgnoreBuffer();
-				}
-				else if (customerChoice < 0)
-				{
-					std::cout << "You have entered a valid input, but it was below zero. Please, make sure that you have entered a numeric value between 0-3.\n";
-					IgnoreBuffer();
-				}
-				else
-				{
-					switch (customerChoice)
+					std::cout << "Choice: ";
+					short customerChoice{};
+					std::cin >> customerChoice;
+
+					if (std::cin.fail())
 					{
-						case 0: 
+						std::cout << "You have entered an invalid input. Please, make sure that you have entered a numeric value between 0-3.\n";
+						std::cin.clear();
+						IgnoreBuffer();
+					}
+					else if (customerChoice < 0)
+					{
+						std::cout << "You have entered a valid input, but it was below zero. Please, make sure that you have entered a numeric value between 0-3.\n";
+						IgnoreBuffer();
+					}
+					else
+					{
+						switch (customerChoice)
+						{
+						case 0:
 						{
 							std::cout << "Exiting from the program by request.\n"; exit(EXIT_SUCCESS);
 						}
@@ -478,14 +480,19 @@ void UserScreen()
 						{
 							std::cout << "Something is crashed. Exiting from the program.\n"; exit(EXIT_FAILURE);
 						}
+						}
 					}
 				}
 			}
+			else
+			{
+				std::cout << "Such _" << PinCode << "_ Pin Code could not be found. Please make sure that you have entered a valid pin code.\n";
+			}			
 		}
 	}
 }
 
-std::vector<AccountOwner>& ReadAccountInfo(const int PinCode, std::vector<AccountOwner>& customerList)
+std::vector<AccountOwner>& ReadAccountInfo(const int& PinCode, std::vector<AccountOwner>& customerList)
 {
 		std::ifstream FileHandler;
 		FileHandler.open(std::to_string(PinCode));
@@ -510,10 +517,13 @@ std::vector<AccountOwner>& ReadAccountInfo(const int PinCode, std::vector<Accoun
 
 			customerList.push_back(customer);
 		}
-		else
-		{
-			std::cout << "Such _" << PinCode << "_ Pin Code could not be found. Please make sure that you have entered a valid pin code.\n";
-		}
+
 	return customerList;
 }
+
+
+
+
+
+
 
