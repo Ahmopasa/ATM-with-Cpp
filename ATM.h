@@ -93,9 +93,9 @@ void ui_screen();
 
 typedef struct AccountOwner
 {
-	char* Name;
-	char* Surname;
-	char* Address;
+	char Name[10];
+	char Surname[10];
+	char Address[10];
 
 	unsigned int Balance;
 	unsigned int AccountPINCode;

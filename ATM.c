@@ -15,24 +15,25 @@ void ui_screen()
 	while (1)
 	{
 		printf("PinCode : ");
-		int PinCode = 0;
+		int PinCode;
 		if (scanf("%d", &PinCode)) {
 			clearBuffer();
 			//TODO #3 : Add a menu.
-			switch (PinCode)
+			if (PinCode == 9999)
 			{
-			case 1:
-			{
-				printf("Hello. Please, you choose 1.\n"); break; //TODO #4 : Add more information after choosing from a menu.
+				printf("WIP\n");
 			}
-			case 2:
+			else if (PinCode < 0)
 			{
-				printf("Hello. Please, you choose 2.\n"); break; //TODO #5 : Add more information after choosing from a menu.
+				printf("You have entered a valid input, but it was below zero. Please, make sure that you have entered a positive numeric value.\n");
 			}
-			default:
+			else
 			{
-				printf("Invalid Input. Please, try again.\n"); break;
-			}
+				printf("Welcome => NoName.\n");
+				printf("0- Exit.\n");
+				printf("1- Exit.\n");
+				printf("2- Exit.\n");
+				printf("3- Exit.\n");
 			}
 		}
 		else
