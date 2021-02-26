@@ -57,15 +57,15 @@ void ui_screen(void)
 						}
 						else if (choice == 1)
 						{
-							CheckAccountInfo(&customer);
+							CheckAccountInfo(&customer); break;
 						} 
 						else if (choice == 2)
 						{
-							printf("WIP -- DepositCash() function will be called.\n"); break; //TODO #4
+							DepositCurrency(&customer); break;
 						}
 						else if (choice == 3)
 						{
-							printf("WIP -- WithdrawCash() function will be called.\n"); break; //TODO #5
+							WithdrawCurrency(&customer); break;
 						}
 						else
 						{
@@ -83,7 +83,6 @@ void ui_screen(void)
 		{
 			printf("Please, enter a numeric value.\n"); clearBuffer(); continue;
 		}
-
 	}
 }
 
@@ -216,13 +215,80 @@ void CheckAccountInfo(const AccountOwner* customer)
 
 void DepositCurrency(AccountOwner* customer)
 {
+	printf("How much TL will you deposit %s? : ", customer->Name);
+	while (1)
+	{
+		int depositAmount;
+		if (scanf("%d", &depositAmount) && depositAmount > 0)
+		{
+			customer->Balance += depositAmount; SaveAccountInfo(customer); break;
 
+			if (customer->Balance > 1000000)
+			{
+				customer->AccountVipStatus = 1; break;
+			}
+			else
+			{
+				customer->AccountVipStatus = 0; break;
+			}
+		}
+		else if (depositAmount < 0)
+		{
+			printf("You have entered a valid input, but it was below zero. Please, make sure that you have entered a positive cash value. Enter a new cash amount : "); clearBuffer();
+		}
+		else
+		{
+			printf("You have entered an invalid cash amount. Please, make sure that you have entered a numeric value : "); clearBuffer();
+		}
+	}
+
+	printf("%s has %dTL in his/her bank account.\n", customer->Name, customer->Balance);
 }
 
 void WithdrawCurrency(AccountOwner* customer)
 {
+	printf("How much TL will you withdraw %s? : ", customer->Name);
+	while (1)
+	{
+		int withdrawAmount;
+		if (scanf("%d", &withdrawAmount) && withdrawAmount > 0 && withdrawAmount <= (int)customer->Balance)
+		{
+			customer->Balance -= withdrawAmount; SaveAccountInfo(customer); break;
+
+			if (customer->Balance < 1000000)
+			{
+				customer->AccountVipStatus = 0; break;
+			}
+			else
+			{
+				customer->AccountVipStatus = 1; break;
+			}
+		}
+		else if (withdrawAmount < 0)
+		{
+			printf("You have entered a valid input, but it was below zero. Please, make sure that you have entered a positive cash value. Enter a new cash amount : "); clearBuffer();
+		}
+		else
+		{
+			printf("You have entered an invalid cash amount. Please, make sure that you have entered a numeric value : "); clearBuffer();
+		}
+	}
+
+	printf("%s has %dTL in his/her bank account.\n", customer->Name, customer->Balance);
 }
 
 void SaveAccountInfo(const AccountOwner* customer)
 {
+	char tempString[4];
+	ToString(customer->AccountPINCode, tempString);
+
+	FILE* FileHandler = fopen(tempString, "w+");
+	if (!FileHandler)
+	{
+		printf("Failed to open file : %s. [WIP : Would you like to create a new account? (Y / N)]\n", tempString); exit(EXIT_FAILURE);
+	}
+
+	if (fprintf(FileHandler, "%s\n%s\n%s\n%d\n%d", customer->Name, customer->Surname, customer->Address, customer->Balance, customer->AccountVipStatus) == 5)
+		;
+	fclose(FileHandler);
 }
