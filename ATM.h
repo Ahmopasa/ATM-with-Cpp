@@ -71,43 +71,5 @@ void UserScreen(void);
 std::vector<AccountOwner>& ReadAccountInfo(const int&, std::vector<AccountOwner>&);
 
 #endif
-
-#ifdef __cplusplus	
-extern "C" {
-#endif // __cplusplus
-
-#define _CRT_SECURE_NO_WARNINGS
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <conio.h>
-#include <string.h>
-#include <time.h>
-#include <limits.h>
-#include <errno.h>
-
-typedef struct AccountOwner
-{
-	char Name[10];
-	char Surname[10];
-	char Address[10];
-
-	unsigned int Balance;
-	unsigned int AccountPINCode;
-	unsigned int AccountVipStatus;
-}AccountOwner;
-
-void ReadAccountInfo(const int, AccountOwner*);
-void ChangeAccountInfo(AccountOwner*);
-void CheckAccountInfo(const AccountOwner*);
-void DepositCurrency(AccountOwner*);
-void WithdrawCurrency(AccountOwner*);
-void SaveAccountInfo(const AccountOwner*);
-void ui_screen(void);
-
-#ifdef __cplusplus
-}
-#endif // __cplusplus
-
  
 #endif // ATM_H_
