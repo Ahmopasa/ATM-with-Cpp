@@ -97,13 +97,10 @@ AccountOwner::AccountOwner(void)
 	AccountPINCode = 0;
 
 	AccountVipStatus = AccountBalance > 1'000'000 ? true : false;
-
-	//std::cout << ++AccountTransactionCounter << " - " << "Constructor for AccountOwner, with predetermined values, was called." << std::endl;
 }
 
 AccountOwner::AccountOwner(std::string& tempName, std::string& tempSurname, std::string& tempAddress, unsigned int& tempBalance, unsigned int& tempPINCode, bool tempVipStatus) : Name{ tempName }, Surname{ tempSurname }, Address{ tempAddress }, AccountBalance{ tempBalance }, AccountPINCode{ tempPINCode }, AccountVipStatus{ tempVipStatus }
 {
-	//std::cout << ++AccountTransactionCounter << " - " << "Constructor for AccountOwner, with desired values, was called." << std::endl;
 }
 
 AccountOwner::AccountOwner(const AccountOwner& tempObj)
@@ -116,13 +113,10 @@ AccountOwner::AccountOwner(const AccountOwner& tempObj)
 	AccountPINCode = tempObj.AccountPINCode;
 
 	AccountVipStatus = tempObj.AccountVipStatus;
-
-	//std::cout << ++AccountTransactionCounter << " - " << " Copy Constructor for AccountOwner was called." << std::endl;
 }
 
 AccountOwner::~AccountOwner()
 {
-	//std::cout << AccountTransactionCounter-- << "th Deconstruction was called" << std::endl;
 }
 
 void CheckAccountInfo(const std::vector<AccountOwner>& customerList)
@@ -424,7 +418,7 @@ void UserScreen()
 		}
 		else if (PinCode == 9999)
 		{
-			std::cout << "WIP" << std::endl;//TODO #1 : Ask for more information about the account. If still the account could not be found, then call the function to create a brand new account.
+			std::cout << "WIP" << std::endl; //TODO #1
 		}
 		else
 		{

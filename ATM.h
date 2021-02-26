@@ -69,7 +69,6 @@ void ChangeAccountInfo(std::vector<AccountOwner>&);
 void SaveAccountInfo(const std::vector<AccountOwner>&);
 void UserScreen(void);
 std::vector<AccountOwner>& ReadAccountInfo(const int&, std::vector<AccountOwner>&);
-// TODO #2 : A function signature will come here to be used when an account owner forgot its PinCode. This brand new function will look for all possible files with given information. So, another brand new file is needed to save the all PinCodes.
 
 #endif
 
@@ -87,10 +86,6 @@ extern "C" {
 #include <limits.h>
 #include <errno.h>
 
-#define CLEAR system("CLS");
-
-void ui_screen();
-
 typedef struct AccountOwner
 {
 	char Name[10];
@@ -99,9 +94,16 @@ typedef struct AccountOwner
 
 	unsigned int Balance;
 	unsigned int AccountPINCode;
-	short AccountVipStatus;
+	unsigned int AccountVipStatus;
 }AccountOwner;
 
+void ReadAccountInfo(const int, AccountOwner*);
+void ChangeAccountInfo(AccountOwner*);
+void CheckAccountInfo(const AccountOwner*);
+void DepositCurrency(AccountOwner*);
+void WithdrawCurrency(AccountOwner*);
+void SaveAccountInfo(const AccountOwner*);
+void ui_screen(void);
 
 #ifdef __cplusplus
 }
