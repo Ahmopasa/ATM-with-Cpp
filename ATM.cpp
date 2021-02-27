@@ -124,12 +124,12 @@ void CheckAccountInfo(const std::vector<AccountOwner>& customerList)
 	for (size_t i = 0; i < customerList.size(); i++)
 	{
 		std::cout << "Information of customer - " << (i) << " :\n";
-		std::cout << "Name: " << customerList[i].getName() << std::endl;
-		std::cout << "Surname: " << customerList[i].getSurname() << std::endl;
-		std::cout << "Address: " << customerList[i].getAddress() << std::endl;
-		std::cout << "AccountBalance: " << customerList[i].getBalance() << std::endl;
-		std::cout << "AccountPINCode: " << customerList[i].getAccountPINCode() << std::endl;
-		std::cout << "AccountVipStatus: " << std::boolalpha << customerList[i].getAccountVipStatus() << std::endl;
+		std::cout << "Name                       : " << customerList[i].getName() << std::endl;
+		std::cout << "Surname                    : " << customerList[i].getSurname() << std::endl;
+		std::cout << "Address                    : " << customerList[i].getAddress() << std::endl;
+		std::cout << "AccountBalance             : " << customerList[i].getBalance() << std::endl;
+		std::cout << "AccountPINCode             : " << customerList[i].getAccountPINCode() << std::endl;
+		std::cout << "AccountVipStatus           : " << std::boolalpha << customerList[i].getAccountVipStatus() << std::endl;
 		std::cout << "Total Amount of Transaction: " << customerList[i].AccountTransactionCounter << std::endl;
 	}
 }
@@ -144,26 +144,26 @@ void DepositCurrency(std::vector<AccountOwner>& customerList)
 		{
 			int depositAmount{};
 			std::cin >> depositAmount;
+			std::cin.clear();
+			IgnoreBuffer();
+
 			if (std::cin.fail())
 			{
 				std::cout << "You have entered an invalid cash amount. Please, make sure that you have entered a numeric value : ";
-				std::cin.clear();
-				IgnoreBuffer();
 			}
-			else if (depositAmount < 0)
+			else if (depositAmount <= 0)
 			{
-				std::cout << "You have entered a valid input, but it was below zero. Please, make sure that you have entered a positive cash value. Enter a new cash amount : ";
-				IgnoreBuffer();
+				std::cout << "You have entered a valid input, but it was equal to or below zero. Please, make sure that you have entered a positive cash value. Enter a new cash amount : ";
 			}
 			else
 			{
 				customerList[i].setBalance(customerList[i].getBalance() + depositAmount); customerList[i].AccountTransactionCounter++;
-				customerList[i].setATMBalanceAmount(customerList[i].getATMBalanceAmount() + depositAmount); break;
+				customerList[i].setATMBalanceAmount(customerList[i].getATMBalanceAmount() + depositAmount); 
+				std::cout << "Currently, customer- " << i << "have " << customerList[i].getBalance() << "TL in his/her bank account.\n"; 
+				break;
 			}
 		}
 
-		std::cout << "Currently, customer- " << i << "have " << customerList[i].getBalance() << "TL in his/her bank account.\n";
-		
 		if (customerList[i].getBalance() > 1'000'000)
 		{
 			customerList[i].setAccountVipStatus(true);
@@ -183,23 +183,25 @@ void WithdrawCurrency(std::vector<AccountOwner>& customerList)
 		{
 			int withdrawAmount{};
 			std::cin >> withdrawAmount;
+			std::cin.clear();
+			IgnoreBuffer();
+
 			if (std::cin.fail())
 			{
 				std::cout << "You have entered an invalid cash amount. Please, make sure that you have entered a numeric value : ";
-				std::cin.clear();
-				IgnoreBuffer();
 			}
-			else if (withdrawAmount < 0)
+			else if (withdrawAmount <= 0)
 			{
-				std::cout << "You have entered a valid input, but it was below zero. Please, make sure that you have entered a positive cash value. Enter a new cash amount : ";
-				IgnoreBuffer();
+				std::cout << "You have entered a valid input, but it was equal to or below zero. Please, make sure that you have entered a positive cash value. Enter a new cash amount : ";
 			}
 			else
 			{
 				if (customerList[i].getATMBalanceAmount() > static_cast<unsigned int>(withdrawAmount) && customerList[i].getBalance() >= static_cast<unsigned int>(withdrawAmount))
 				{
 					customerList[i].setBalance(customerList[i].getBalance() - withdrawAmount); customerList[i].AccountTransactionCounter++;
-					customerList[i].setATMBalanceAmount(customerList[i].getATMBalanceAmount() - withdrawAmount); break;
+					customerList[i].setATMBalanceAmount(customerList[i].getATMBalanceAmount() - withdrawAmount); 
+					std::cout << "Currently, customer -" << i + 1 << "- have " << customerList[i].getBalance() << "TL in his/her bank account.\n"; 
+					break;
 				}
 				else
 				{
@@ -211,8 +213,6 @@ void WithdrawCurrency(std::vector<AccountOwner>& customerList)
 				}
 			}
 		}
-
-		std::cout << "Currently, customer -" << i + 1 << "- have " << customerList[i].getBalance() << "TL in his/her bank account.\n";
 
 		if (customerList[i].getBalance() <= 1'000'000)
 		{
@@ -228,6 +228,9 @@ std::vector<AccountOwner>& CreateAccount(std::vector<AccountOwner>& customerList
 	unsigned int amount{};
 	std::cout << "How many accounts will be created ? : ";
 	std::cin >> amount;
+	std::cin.clear();
+	IgnoreBuffer();
+
 	if (std::cin.fail())
 	{
 		std::cout << "Please, enter a numeric number!. Program is exiting."; exit(EXIT_FAILURE);
@@ -236,13 +239,16 @@ std::vector<AccountOwner>& CreateAccount(std::vector<AccountOwner>& customerList
 	for (unsigned int counterList{}; counterList < amount; counterList++)
 	{
 		std::cout << "How would you like to create an account for the customer - " << counterList + 1 << "?\n";
-		std::cout << "1. With predefined values.\n";
-		std::cout << "2. With specific values.\n";
-		std::cout << "0. To Exit.\n";
+		std::cout << "With predefined values : 1\n";
+		std::cout << "With specific values   : 2\n";
+		std::cout << "To Exit                : 0\n";
 		std::cout << "Choice: ";
 
 		unsigned int choice{};
 		std::cin >> choice;
+		std::cin.clear();
+		IgnoreBuffer();
+		
 		if (std::cin.fail())
 		{
 			std::cout << "Please, enter a numeric number between 0 and 2!. Program is exiting."; exit(EXIT_FAILURE);
@@ -267,12 +273,12 @@ std::vector<AccountOwner>& CreateAccount(std::vector<AccountOwner>& customerList
 				bool customerAccountVipStatus;
 
 				std::cout << "Please, Enter " << counterList << "th Customer's Information:\n";
-				std::cout << "Name:       "; std::cin >> customerName;
-				std::cout << "Surname:    "; std::cin >> customerSurame;
-				std::cout << "Address:    "; std::cin >> customerAddress;
-				std::cout << "Balance:    "; std::cin >> customerAccountBalance;
-				std::cout << "PIN Code:   "; std::cin >> customerAccountPINCode;
-				std::cout << "VIP Status: "; std::cin >> customerAccountVipStatus;
+				std::cout << "Name:       "; std::cin >> customerName; std::cin.clear(); IgnoreBuffer();
+				std::cout << "Surname:    "; std::cin >> customerSurame; std::cin.clear(); IgnoreBuffer();
+				std::cout << "Address:    "; std::cin >> customerAddress; std::cin.clear(); IgnoreBuffer();
+				std::cout << "Balance:    "; std::cin >> customerAccountBalance; std::cin.clear(); IgnoreBuffer();
+				std::cout << "PIN Code:   "; std::cin >> customerAccountPINCode; std::cin.clear(); IgnoreBuffer();
+				std::cout << "VIP Status: "; std::cin >> customerAccountVipStatus; std::cin.clear(); IgnoreBuffer();
 
 				AccountOwner customer{ customerName , customerSurame , customerAddress , customerAccountBalance , customerAccountPINCode , customerAccountVipStatus };
 
@@ -289,85 +295,113 @@ std::vector<AccountOwner>& CreateAccount(std::vector<AccountOwner>& customerList
 			}
 		}
 	}
+
+	SaveAccountInfo(customerList);
 	return customerList;
 }
 
 void ChangeAccountInfo(std::vector<AccountOwner>& customerList)
 {
 	std::cout << "Which piece of information would you like to change?\n";
-	std::cout << "To Exit:            0\n";
-	std::cout << "To Change Name:     1\n";
-	std::cout << "To Change Surname:  2\n";
-	std::cout << "To Change Address:  3\n";
+	std::cout << "To Exit           : -1\n";
+	std::cout << "To Change Name    : 1\n";
+	std::cout << "To Change Surname : 2\n";
+	std::cout << "To Change Address : 3\n";
 	std::cout << "To Change PIN Code: 4\n";
-	std::cout << "Choice: ";
-
-	unsigned int choice{};
-	std::cin >> choice;
-
-	for (size_t i = 0; i < customerList.size(); i++)
+	
+	while (true)
 	{
-		switch (choice)
+		int choice{};
+		std::cout << "Choice to change info : ";
+		std::cin >> choice;
+		std::cin.clear();
+		IgnoreBuffer();
+
+		if (std::cin.fail())
 		{
-			case 0:
+			std::cout << "Please, enter a numeric value between (-1) and (4), except (9) : ";
+		}
+		else if (choice < -1)
+		{
+			std::cout << "Please, enter a numeric value between (-1) and (4), except (0) : ";
+		}
+		else
+		{
+			switch (choice)
 			{
-				std::cout << "Exiting from the program.\n"; break;
-			}
-			case 1:
-			{
-				for (size_t i = 0; i < customerList.size(); i++)
+				case -1:
 				{
-					std::string Name;
-					std::cout << "Enter the new name for customer -" << i +1 << ": ";
-					std::cin >> Name;
-
-					customerList[i].setName(Name);
+					std::cout << "Exiting from the program.\n"; exit(EXIT_SUCCESS);
 				}
-
-				break;
-			}
-			case 2:
-			{
-				for (size_t i = 0; i < customerList.size(); i++)
+				case 1:
 				{
-					std::string Surname;
-					std::cout << "Enter the new surname for customer -" << i + 1 << ": ";
-					std::cin >> Surname;
+					for (size_t i = 0; i < customerList.size(); i++)
+					{
+						std::string Name;
+						std::cout << "Enter the new name for customer -" << i + 1 << ": ";
+						std::cin >> Name;
+						std::cin.clear();
+						IgnoreBuffer();
 
-					customerList[i].setSurname(Surname);
+						customerList[i].setName(Name);
+					}
+					break;
 				}
-
-				break;
-			}
-			case 3:
-			{
-				for (size_t i = 0; i < customerList.size(); i++)
+				case 2:
 				{
-					std::string Address;
-					std::cout << "Enter the new address for customer -" << i + 1 << ": ";
-					std::cin >> Address;
+					for (size_t i = 0; i < customerList.size(); i++)
+					{
+						std::string Surname;
+						std::cout << "Enter the new surname for customer -" << i + 1 << ": ";
+						std::cin >> Surname;
+						std::cin.clear();
+						IgnoreBuffer();
 
-					customerList[i].setAddress(Address);
+						customerList[i].setSurname(Surname);
+					}
+					break;
 				}
-
-				break;
-			}
-			case 4:
-			{
-				for (size_t i = 0; i < customerList.size(); i++)
+				case 3:
 				{
-					int PinCode;
-					std::cout << "Enter the new PIN Code for customer -" << i + 1 << ": ";
-					std::cin >> PinCode;
+					for (size_t i = 0; i < customerList.size(); i++)
+					{
+						std::string Address;
+						std::cout << "Enter the new address for customer -" << i + 1 << ": ";
+						std::cin >> Address;
+						std::cin.clear();
+						IgnoreBuffer();
 
-					customerList[i].setAccountPINCode(PinCode);
+						customerList[i].setAddress(Address);
+					}
+					break;
 				}
+				case 4:
+				{
+					for (size_t i = 0; i < customerList.size(); i++)
+					{
+						int PinCode;
+						std::string OldPinCode = std::to_string(customerList[i].getAccountPINCode());
+						std::remove(OldPinCode.c_str());
 
-				break;
+						std::cout << "Enter the new PIN Code for customer -" << i + 1 << ": ";
+						std::cin >> PinCode;
+						std::cin.clear();
+						IgnoreBuffer();
+						customerList[i].setAccountPINCode(PinCode);
+					}
+					break;
+				}
+				default:
+				{
+					std::cout << "Please, enter a numeric value between (-1) and (4), except (0) : "; break;
+				}
 			}
+
+			SaveAccountInfo(customerList); 
 		}
 	}
-
+	
+	
 }
 
 void SaveAccountInfo(const std::vector<AccountOwner>& customerList)
@@ -404,76 +438,82 @@ void UserScreen()
 		std::cout << "PinCode : ";
 		short PinCode{};
 		std::cin >> PinCode;
+		std::cin.clear();
+		IgnoreBuffer();
 
 		if (std::cin.fail())
 		{
 			std::cout << "You have entered an invalid input. Please, make sure that you have entered a numeric value.\n";
-			std::cin.clear();
-			IgnoreBuffer();
 		}
 		else if (PinCode < 0)
 		{
 			std::cout << "You have entered a valid input, but it was below zero. Please, make sure that you have entered a positive numeric value.\n";
-			IgnoreBuffer();
 		}
 		else if (PinCode == 9999)
 		{
 			std::cout << "WIP" << std::endl; //TODO #1
 		}
-		else
+		else if (PinCode == 0)
 		{
-			std::cout << "Flushing the output stream!...\n" << std::flush; std::system("CLS");
+			std::cout << "WIP" << std::endl; //TODO #2
+		}
+		else
+		{	
 			ReadAccountInfo(PinCode, customerList);
 			if (!customerList.empty())
 			{
 				std::cout << "Welcome => " << customerList[0].getName() << "!\n";
 				std::cout << "What would you like to do?\n";
-				std::cout << "1- See Account Information.\n";
-				std::cout << "2- Deposit Cash.\n";
-				std::cout << "3- Withdraw Cash.\n";
-				std::cout << "0- Exit.\n";
+				std::cout << "To See Account Information : 1\n";
+				std::cout << "To Deposit Cash            : 2\n";
+				std::cout << "To Withdraw Cash           : 3\n";
+				std::cout << "To Change Account Info.    : 4\n";
+				std::cout << "To Exit                    : -1\n";
 
 				while (true)
 				{
-					std::cout << "Choice: ";
+					std::cout << "Choice to take action: ";
 					short customerChoice{};
 					std::cin >> customerChoice;
+					std::cin.clear();
+					IgnoreBuffer();
 
 					if (std::cin.fail())
 					{
-						std::cout << "You have entered an invalid input. Please, make sure that you have entered a numeric value between 0-3.\n";
-						std::cin.clear();
-						IgnoreBuffer();
+						std::cout << "Please, enter a numeric value between (-1) and (4), except (0)\n";
 					}
-					else if (customerChoice < 0)
+					else if (customerChoice < -1)
 					{
-						std::cout << "You have entered a valid input, but it was below zero. Please, make sure that you have entered a numeric value between 0-3.\n";
-						IgnoreBuffer();
+						std::cout << "Please, enter a numeric value between (-1) and (4), except (0)\n";
 					}
 					else
 					{
 						switch (customerChoice)
 						{
-						case 0:
-						{
-							std::cout << "Exiting from the program by request.\n"; exit(EXIT_SUCCESS);
-						}
-						case 1:
-						{
-							CheckAccountInfo(customerList); break;
-						}
-						case 2:
-						{
-							DepositCurrency(customerList); break;
-						}
-						case 3:
-						{
-							WithdrawCurrency(customerList); break;
-						}
-						default:
-						{
-							std::cout << "Something is crashed. Exiting from the program.\n"; exit(EXIT_FAILURE);
-						}
+							case -1:
+							{
+								std::cout << "Exiting from the program by request.\n"; exit(EXIT_SUCCESS);
+							}
+							case 1:
+							{
+								CheckAccountInfo(customerList); break;
+							}
+							case 2:
+							{
+								DepositCurrency(customerList); break;
+							}
+							case 3:
+							{
+								WithdrawCurrency(customerList); break;
+							}
+							case 4:
+							{
+								ChangeAccountInfo(customerList); break;
+							}
+							default:
+							{
+								std::cout << "Please, enter a numeric value between (-1) and (4), except (0)\n";
+							}
 						}
 					}
 				}
@@ -481,7 +521,7 @@ void UserScreen()
 			else
 			{
 				std::cout << "Such _" << PinCode << "_ Pin Code could not be found. Please make sure that you have entered a valid pin code.\n";
-			}			
+			}
 		}
 	}
 }
@@ -508,7 +548,6 @@ std::vector<AccountOwner>& ReadAccountInfo(const int& PinCode, std::vector<Accou
 			customer.setBalance(std::stoi(tempStringVector[3]));
 			customer.setAccountPINCode(PinCode);
 			customer.setAccountVipStatus(std::stoi(tempStringVector[4]));
-
 			customerList.push_back(customer);
 		}
 
