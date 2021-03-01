@@ -61,14 +61,14 @@ public:
 	~AccountOwner();
 };
 
-void CheckAccountInfo(const std::vector<AccountOwner>&);
-void DepositCurrency(std::vector<AccountOwner>&);
-void WithdrawCurrency(std::vector<AccountOwner>&);
-std::vector<AccountOwner>& CreateAccount(std::vector<AccountOwner>&);
-void ChangeAccountInfo(std::vector<AccountOwner>&); 
-void SaveAccountInfo(const std::vector<AccountOwner>&);
+void CheckAccountInfo(const std::unique_ptr<AccountOwner>);
+void DepositCurrency(std::unique_ptr<AccountOwner>);
+void WithdrawCurrency(std::unique_ptr<AccountOwner>);
+std::unique_ptr<AccountOwner> CreateAccount(const int&);
+void ChangeAccountInfo(std::unique_ptr<AccountOwner>);
+void SaveAccountInfo(const std::unique_ptr<AccountOwner>);
 void UserScreen(void);
-std::vector<AccountOwner>& ReadAccountInfo(const int&, std::vector<AccountOwner>&);
+std::unique_ptr<AccountOwner> ReadAccountInfo(const int&);
 
 #endif
  
