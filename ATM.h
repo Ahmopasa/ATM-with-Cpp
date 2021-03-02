@@ -61,15 +61,14 @@ public:
 	~AccountOwner();
 };
 
-void CheckAccountInfo(const std::unique_ptr<AccountOwner>);
+std::unique_ptr<AccountOwner> CreateAccount(const int&);
+std::unique_ptr<AccountOwner> ReadAccountInfo(const int&);
+void UserScreen(void);
+void CheckAccountInfo( std::unique_ptr<AccountOwner>);
 void DepositCurrency(std::unique_ptr<AccountOwner>);
 void WithdrawCurrency(std::unique_ptr<AccountOwner>);
-std::unique_ptr<AccountOwner> CreateAccount(const int&);
 void ChangeAccountInfo(std::unique_ptr<AccountOwner>);
-void SaveAccountInfo(const std::unique_ptr<AccountOwner>);
-void UserScreen(void);
-std::unique_ptr<AccountOwner> ReadAccountInfo(const int&);
+std::unique_ptr<AccountOwner> SaveAccountInfo(std::unique_ptr<AccountOwner>);
 
-#endif
- 
+#endif 
 #endif // ATM_H_
