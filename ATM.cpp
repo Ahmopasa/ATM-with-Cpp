@@ -228,18 +228,18 @@ std::unique_ptr<AccountOwner> ReadAccountInfo(const int& PinCode)
 			{
 				switch (choice)
 				{
-				case 'y':
-				case 'Y':
-				{
-					[[__fallthrough]];
-					return CreateAccount(PinCode);
-				}
-				case 'n':
-				case 'N':
-				{
-					[[__fallthrough]];
-					std::cout << "Exiting from the program by request.\n"; exit(EXIT_SUCCESS);
-				}
+					case 'y':
+					case 'Y':
+					{
+						[[__fallthrough]];
+						return CreateAccount(PinCode);
+					}
+					case 'n':
+					case 'N':
+					{
+						[[__fallthrough]];
+						std::cout << "Exiting from the program by request.\n"; exit(EXIT_SUCCESS);
+					}
 				default:
 				{
 					std::cout << "Please, enter a char of 'Y' or 'N': "; continue;
@@ -265,31 +265,22 @@ void UserScreen(void)
 		IgnoreBuffer();
 		system("cls");
 
-		if (std::cin.fail())
+		if (std::cin.fail() || PinCode < 0)
 		{
 			std::cout << "You have entered an invalid input. Please, make sure that you have entered a numeric value.\n"; continue;
 		}
-		else if (PinCode < 0)
-		{
-			std::cout << "You have entered a valid input, but it was below zero. Please, make sure that you have entered a positive numeric value.\n"; continue;
-		}
-		else if (PinCode == 9999)
-		{
-			std::cout << "WIP - 9999" << std::endl; continue; //TODO #1
-		}
 		else if (PinCode == 0)
 		{
-			std::cout << "WIP - 0" << std::endl; continue; //TODO #2
+			std::cout << "DO NOT ENTER (0) OR ALPHABETIC CHARACTER!!!\n" << std::endl; continue;
 		}
 		else
 		{
-			std::unique_ptr<AccountOwner> customer = ReadAccountInfo(PinCode);
-
-			std::cout << "Welcome => " << customer->getName() << "!\n";
-
 			while (true)
 			{
-				std::cout << "What would you like to do?\n";
+				system("cls");
+				std::unique_ptr<AccountOwner> customer = ReadAccountInfo(PinCode);
+				std::cout << "Welcome => " << customer->getName() << "!\n";
+				std::cout << "\nWhat would you like to do?\n";
 				std::cout << "To See Account Information : 1\n";
 				std::cout << "To Deposit Cash            : 2\n";
 				std::cout << "To Withdraw Cash           : 3\n";
@@ -300,7 +291,6 @@ void UserScreen(void)
 				std::cin >> customerChoice;
 				std::cin.clear();
 				IgnoreBuffer();
-				system("cls");
 
 				if (std::cin.fail())
 				{
@@ -332,15 +322,10 @@ void UserScreen(void)
 						}
 						case 4:
 						{
-							ChangeAccountInfo(std::move(customer)); break;
-						}
-						default:
-						{
-							std::cout << "Please, enter a numeric value between (-1) and (4), except (0)\n";
+							ChangeAccountInfo(PinCode); break;
 						}
 					}
 				}
-				break;
 			}
 		}
 		break;
@@ -349,6 +334,7 @@ void UserScreen(void)
 
 void CheckAccountInfo( std::unique_ptr<AccountOwner> customer)
 {
+	system("cls");
 	std::cout << "=============================================" << std::endl;
 	std::cout << "Information of customer    :\n";
 	std::cout << "Name                       : " << customer->getName() << std::endl;
@@ -359,11 +345,45 @@ void CheckAccountInfo( std::unique_ptr<AccountOwner> customer)
 	std::cout << "AccountVipStatus           : " << std::boolalpha << customer->getAccountVipStatus() << std::endl;
 	std::cout << "Total Amount of Transaction: " << customer->AccountTransactionCounter << std::endl;
 	std::cout << "=============================================" << std::endl;
+	std::cout << "Would you like to continue[y], or exit[n]? : ";
+	while (true)
+	{
+		char choice;
+		std::cin >> choice;
+		std::cin.clear();
+		IgnoreBuffer();
+
+		if (std::cin.fail())
+		{
+			std::cout << "Please, enter a char of 'Y' or 'N': "; continue;
+		}
+		else
+		{
+			switch (choice)
+			{
+				case 'y':
+				case 'Y': 
+				{
+					[[__fallthrough]]; system("cls"); break;
+				}
+				case 'n':
+				case 'N':
+				{
+					[[__fallthrough]]; std::cout << "Exiting from the program by request.\n"; exit(EXIT_SUCCESS);
+				}
+				default:
+				{
+					std::cout << "Please, enter a char of 'Y' or 'N': "; continue;
+				}
+			}
+		}
+		break;
+	}
 }
 
 void DepositCurrency(std::unique_ptr<AccountOwner> customer)
 {
-	std::cout << "How much TL will you deposit to?" << std::flush;
+	std::cout << "How much TL will you deposit to? : " << std::flush;
 		
 	while (true)
 	{
@@ -372,13 +392,9 @@ void DepositCurrency(std::unique_ptr<AccountOwner> customer)
 		std::cin.clear();
 		IgnoreBuffer();
 
-		if (std::cin.fail())
+		if (std::cin.fail() || depositAmount <= 0)
 		{
-			std::cout << "You have entered an invalid cash amount. Please, make sure that you have entered a numeric value : "; continue;
-		}
-		else if (depositAmount <= 0)
-		{
-			std::cout << "You have entered a valid input, but it was equal to or below zero. Please, make sure that you have entered a positive cash value. Enter a new cash amount : "; continue;
+			std::cout << "You have entered an invalid cash amount. Please, make sure that you have entered a positive numeric value : "; continue;
 		}
 		else
 		{
@@ -395,11 +411,46 @@ void DepositCurrency(std::unique_ptr<AccountOwner> customer)
 	}
 	
 	SaveAccountInfo(std::move(customer));
+
+	std::cout << "Would you like to continue[y], or exit[n]? : ";
+	while (true)
+	{
+		char choice;
+		std::cin >> choice;
+		std::cin.clear();
+		IgnoreBuffer();
+
+		if (std::cin.fail())
+		{
+			std::cout << "Please, enter a char of 'Y' or 'N': "; continue;
+		}
+		else
+		{
+			switch (choice)
+			{
+				case 'y':
+				case 'Y':
+				{
+					[[__fallthrough]]; system("cls"); break;
+				}
+				case 'n':
+				case 'N':
+				{
+					[[__fallthrough]]; std::cout << "Exiting from the program by request.\n"; exit(EXIT_SUCCESS);
+				}
+				default:
+				{
+					std::cout << "Please, enter a char of 'Y' or 'N': "; continue;
+				}
+			}
+		}
+		break;
+	}
 }
 
 void WithdrawCurrency(std::unique_ptr<AccountOwner> customer)
 {
-	std::cout << "How much TL will you withdraw from?" << std::flush;
+	std::cout << "How much TL will you withdraw from? : " << std::flush;
 		
 	while (true)
 	{
@@ -408,13 +459,9 @@ void WithdrawCurrency(std::unique_ptr<AccountOwner> customer)
 		std::cin.clear();
 		IgnoreBuffer();
 
-		if (std::cin.fail())
+		if (std::cin.fail() || withdrawAmount <= 0)
 		{
-			std::cout << "You have entered an invalid cash amount. Please, make sure that you have entered a numeric value : "; continue;
-		}
-		else if (withdrawAmount <= 0)
-		{
-			std::cout << "You have entered a valid input, but it was equal to or below zero. Please, make sure that you have entered a positive cash value. Enter a new cash amount : "; continue;
+			std::cout << "You have entered an invalid cash amount. Please, make sure that you have entered a positive numeric value : "; continue;
 		}
 		else
 		{
@@ -443,19 +490,56 @@ void WithdrawCurrency(std::unique_ptr<AccountOwner> customer)
 	}
 
 	SaveAccountInfo(std::move(customer));
-}
 
-void ChangeAccountInfo(std::unique_ptr<AccountOwner> customer)
-{
-	std::cout << "Which piece of information would you like to change?\n";
-	std::cout << "To Exit           : -1\n";
-	std::cout << "To Change Name    : 1\n";
-	std::cout << "To Change Surname : 2\n";
-	std::cout << "To Change Address : 3\n";
-	std::cout << "To Change PIN Code: 4\n";
-	
+	std::cout << "Would you like to continue[y], or exit[n]? : ";
 	while (true)
 	{
+		char choice;
+		std::cin >> choice;
+		std::cin.clear();
+		IgnoreBuffer();
+
+		if (std::cin.fail())
+		{
+			std::cout << "Please, enter a char of 'Y' or 'N': "; continue;
+		}
+		else
+		{
+			switch (choice)
+			{
+				case 'y':
+				case 'Y':
+				{
+					[[__fallthrough]]; system("cls"); break;
+				}
+				case 'n':
+				case 'N':
+				{
+					[[__fallthrough]]; std::cout << "Exiting from the program by request.\n"; exit(EXIT_SUCCESS);
+				}
+				default:
+				{
+					std::cout << "Please, enter a char of 'Y' or 'N': "; continue;
+				}
+			}
+		}
+		break;
+	}
+}
+
+int ChangeAccountInfo(const int& PinCode)
+{
+	while (true)
+	{
+		system("cls");
+		std::unique_ptr<AccountOwner> customer = ReadAccountInfo(PinCode);
+		std::cout << "Which piece of information would you like to change?\n";
+		std::cout << "To Exit           : -1\n";
+		std::cout << "To Change Name    : 1\n";
+		std::cout << "To Change Surname : 2\n";
+		std::cout << "To Change Address : 3\n";
+		std::cout << "To Change PIN Code: 4\n";
+		std::cout << "To Go to Main Menu: 5\n";
 		int choice{};
 		std::cout << "Choice to change info : ";
 		std::cin >> choice;
@@ -478,6 +562,10 @@ void ChangeAccountInfo(std::unique_ptr<AccountOwner> customer)
 				{
 					std::cout << "Exiting from the program.\n"; exit(EXIT_SUCCESS);
 				}
+				case 5:
+				{
+					return 1;
+				}
 				case 1:
 				{
 					std::string Name;
@@ -487,7 +575,47 @@ void ChangeAccountInfo(std::unique_ptr<AccountOwner> customer)
 					IgnoreBuffer();
 
 					customer->setName(Name);
-					break;
+					std::cout << "Your name has been changed. Your new name is : " << customer->getName() << std::endl;
+					SaveAccountInfo(std::move(customer));
+
+					std::cout << "Would you like to change another information, or come back to main menu?\n";
+					std::cout << "(Y/y) : To change another information,\n";
+					std::cout << "(N/n) : To come back to main menu,\n";
+
+					while (true)
+					{
+						char choice;
+						std::cin >> choice;
+						std::cin.clear();
+						IgnoreBuffer();
+
+						if (std::cin.fail())
+						{
+							std::cout << "Please, enter a char of 'Y' or 'N': "; continue;
+						}
+						else
+						{
+							switch (choice)
+							{
+								case 'y':
+								case 'Y':
+								{
+									[[__fallthrough]]; system("cls"); break;
+								}
+								case 'n':
+								case 'N':
+								{
+									[[__fallthrough]]; system("cls"); return 1;
+								}
+								default:
+								{
+									std::cout << "Please, enter a char of 'Y' or 'N': "; continue;
+								}
+							}
+						}
+						break;
+					} 
+					 continue;
 				}
 				case 2:
 				{
@@ -498,7 +626,47 @@ void ChangeAccountInfo(std::unique_ptr<AccountOwner> customer)
 					IgnoreBuffer();
 
 					customer->setSurname(Surname);
-					break;
+					std::cout << "Your surname has been changed. Your new surname is : " << customer->getSurname() << std::endl;
+					SaveAccountInfo(std::move(customer));
+
+					std::cout << "Would you like to change another information, or come back to main menu?\n";
+					std::cout << "(Y/y) : To change another information,\n";
+					std::cout << "(N/n) : To come back to main menu,\n";
+
+					while (true)
+					{
+						char choice;
+						std::cin >> choice;
+						std::cin.clear();
+						IgnoreBuffer();
+
+						if (std::cin.fail())
+						{
+							std::cout << "Please, enter a char of 'Y' or 'N': "; continue;
+						}
+						else
+						{
+							switch (choice)
+							{
+								case 'y':
+								case 'Y':
+								{
+									[[__fallthrough]]; system("cls"); break;
+								}
+								case 'n':
+								case 'N':
+								{
+									[[__fallthrough]]; system("cls"); return 1;
+								}
+								default:
+								{
+									std::cout << "Please, enter a char of 'Y' or 'N': "; continue;
+								}
+							}
+						}
+						break;
+					}
+					 continue;
 				}
 				case 3:
 				{
@@ -509,29 +677,107 @@ void ChangeAccountInfo(std::unique_ptr<AccountOwner> customer)
 					IgnoreBuffer();
 
 					customer->setAddress(Address);
-					break;
+					std::cout << "Your address has been changed. Your new address is : " << customer->getAddress() << std::endl;
+					SaveAccountInfo(std::move(customer));
+
+					std::cout << "Would you like to change another information, or come back to main menu?\n";
+					std::cout << "(Y/y) : To change another information,\n";
+					std::cout << "(N/n) : To come back to main menu,\n";
+
+					while (true)
+					{
+						char choice;
+						std::cin >> choice;
+						std::cin.clear();
+						IgnoreBuffer();
+
+						if (std::cin.fail())
+						{
+							std::cout << "Please, enter a char of 'Y' or 'N': "; continue;
+						}
+						else
+						{
+							switch (choice)
+							{
+								case 'y':
+								case 'Y':
+								{
+									[[__fallthrough]]; system("cls"); break;
+								}
+								case 'n':
+								case 'N':
+								{
+									[[__fallthrough]]; system("cls"); return 1;
+								}
+								default:
+								{
+									std::cout << "Please, enter a char of 'Y' or 'N': "; continue;
+								}
+							}
+						}
+						break;
+					}
+					 continue;
 				}
 				case 4:
 				{
-					int PinCode;
+					int temp_PinCode;
 					std::string OldPinCode = std::to_string(customer->getAccountPINCode());
 					std::remove(OldPinCode.c_str());
 
 					std::cout << "Enter the new Pin Code for customer:";
-					std::cin >> PinCode;
+					std::cin >> temp_PinCode;
 					std::cin.clear();
 					IgnoreBuffer();
 
-					customer->setAccountPINCode(PinCode);
-					break;
+					customer->setAccountPINCode(temp_PinCode);
+					std::cout << "Your PIN Code has been changed. Your new PIN Code is : " << customer->getAccountPINCode() << std::endl;
+					SaveAccountInfo(std::move(customer));
+
+					std::cout << "Would you like to change another information, or come back to main menu?\n";
+					std::cout << "(Y/y) : To change another information,\n";
+					std::cout << "(N/n) : To come back to main menu,\n";
+
+					while (true)
+					{
+						char choice;
+						std::cin >> choice;
+						std::cin.clear();
+						IgnoreBuffer();
+
+						if (std::cin.fail())
+						{
+							std::cout << "Please, enter a char of 'Y' or 'N': "; continue;
+						}
+						else
+						{
+							switch (choice)
+							{
+								case 'y':
+								case 'Y':
+								{
+									[[__fallthrough]]; system("cls"); break;
+								}
+								case 'n':
+								case 'N':
+								{
+									[[__fallthrough]]; system("cls"); return 1;
+								}
+								default:
+								{
+									std::cout << "Please, enter a char of 'Y' or 'N': "; continue;
+								}
+							}
+						}
+						break;
+					}
+				 continue;
 				}
 				default:
 				{
 					std::cout << "Please, enter a numeric value between (-1) and (4), except (0) : "; break;
 				}
 			}
-			SaveAccountInfo(std::move(customer)); 
-			break;
 		}
 	}
 }

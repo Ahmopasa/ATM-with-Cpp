@@ -34,7 +34,6 @@ int main()
 	while (true)
 	{
 		UserScreen();
-
 	}
 
 
