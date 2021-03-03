@@ -10,32 +10,19 @@
 
 class ATM
 {
-private:
-	unsigned int ATMBalanceAmount;
-
 public:
 	ATM();
 	~ATM();
 
 	const unsigned int& getATMBalanceAmount(void) const;
 	void setATMBalanceAmount(const unsigned int&);
+
+private:
+	unsigned int ATMBalanceAmount;
 };
 
 class AccountOwner : public ATM
 {
-private:
-	std::string Name;
-	std::string Surname;
-	std::string Address;
-
-	unsigned int AccountBalance;
-	unsigned int AccountPINCode;
-
-	bool AccountVipStatus;
-
-public:
-	static int AccountTransactionCounter;
-
 public:
 	const std::string& getName(void) const;
 	void setName(const std::string&);
@@ -49,7 +36,7 @@ public:
 	const unsigned int& getBalance(void) const;
 	void setBalance(const unsigned int&);
 
-	const unsigned int& getAccountPINCode(void) const; 
+	const unsigned int& getAccountPINCode(void) const;
 	void setAccountPINCode(const unsigned int&);
 
 	const bool& getAccountVipStatus(void) const;
@@ -59,6 +46,19 @@ public:
 	AccountOwner(std::string& tempName, std::string& tempSurname, std::string& tempAddress, unsigned int& tempBalance, unsigned int& tempPINCode, bool tempVipStatus = false);
 	AccountOwner(const AccountOwner&);
 	~AccountOwner();
+
+public:
+	static int AccountTransactionCounter;
+
+private:
+	std::string Name;
+	std::string Surname;
+	std::string Address;
+
+	unsigned int AccountBalance;
+	unsigned int AccountPINCode;
+
+	bool AccountVipStatus;
 };
 
 std::unique_ptr<AccountOwner> CreateAccount(const int&);
