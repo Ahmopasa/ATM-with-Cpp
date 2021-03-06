@@ -67,18 +67,6 @@ AccountOwner::AccountOwner(const std::string& tempName, const std::string& tempS
 	;
 }
 
-AccountOwner::AccountOwner(const AccountOwner& tempObj)
-{
-	Name = tempObj.Name;
-	Surname = tempObj.Surname;
-	Address = tempObj.Address;
-
-	AccountBalance = tempObj.AccountBalance;
-	AccountPINCode = tempObj.AccountPINCode;
-
-	AccountVipStatus = tempObj.AccountVipStatus;
-}
-
 AccountOwner::~AccountOwner()
 {
 }

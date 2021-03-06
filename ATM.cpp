@@ -1,9 +1,5 @@
 #include "ATM.h"
 
-ATM::ATM()
-{
-}
-
 ATM::~ATM()
 {
 }

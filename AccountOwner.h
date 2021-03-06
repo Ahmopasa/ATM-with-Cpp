@@ -25,7 +25,7 @@ public:
 
 	AccountOwner(void) = default;
 	AccountOwner(const std::string& tempName, const std::string& tempSurname, const std::string& tempAddress, const unsigned int& tempBalance, const unsigned int& tempPINCode, const bool tempVipStatus = false);
-	AccountOwner(const AccountOwner&);
+	AccountOwner(const AccountOwner& tempObj) : Name(tempObj.Name), Surname(tempObj.Surname), Address(tempObj.Address), AccountBalance(tempObj.AccountBalance), AccountPINCode(tempObj.AccountPINCode), AccountVipStatus(tempObj.AccountVipStatus) {};
 	~AccountOwner();
 
 private:

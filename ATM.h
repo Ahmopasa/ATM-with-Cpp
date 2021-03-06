@@ -3,7 +3,7 @@
 class ATM
 {
 public:
-	ATM();
+	ATM() = default;
 	~ATM();
 
 	const unsigned int& getATMBalanceAmount(void) const;
